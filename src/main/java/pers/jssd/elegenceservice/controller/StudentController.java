@@ -3,8 +3,10 @@ package pers.jssd.elegenceservice.controller;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.jssd.elegenceservice.entity.AjaxResponse;
+import pers.jssd.elegenceservice.entity.Insert;
 import pers.jssd.elegenceservice.entity.PageBean;
-import pers.jssd.elegenceservice.pojo.Student;
+import pers.jssd.elegenceservice.pojo.StudentDo;
+import pers.jssd.elegenceservice.pojo.StudentVo;
 import pers.jssd.elegenceservice.service.StudentService;
 
 import javax.validation.constraints.PositiveOrZero;
@@ -26,21 +28,22 @@ public class StudentController {
     @GetMapping
     public AjaxResponse findAll(@RequestParam(defaultValue = "0", required = false) int page,
                                 @RequestParam(defaultValue = "5", required = false) int size) {
-        PageBean<Student> pageBean = studentService.findAll(page, size);
+        PageBean<StudentDo> pageBean = studentService.findAll(page, size);
         return AjaxResponse.success(pageBean);
     }
 
     @GetMapping("/{id}")
     public AjaxResponse findOneById(@PositiveOrZero(message = "id格式错误-请输入正整数类型id") @PathVariable long id) {
-        Student student = studentService.findOneById(id);
-        if (student == null) {
+        StudentVo studentVo = studentService.findOneById(id);
+        if (studentVo == null) {
             return AjaxResponse.success(null, "无此类型数据");
         }
-        return AjaxResponse.success(student);
+        return AjaxResponse.success(studentVo);
     }
 
     @PostMapping
-    public AjaxResponse addOne(@RequestBody Student student) {
-        return AjaxResponse.success();
+    public AjaxResponse addOne(@Validated(Insert.class) @RequestBody StudentDo studentDo) {
+        long id = studentService.addOne(studentDo);
+        return AjaxResponse.success(id);
     }
 }

@@ -16,8 +16,8 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "students")
-public class Student implements Serializable {
+@Table(name = "courses")
+public class CourseDo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,8 +25,5 @@ public class Student implements Serializable {
 
     private String name;
 
-    private Integer grade;
 
-    @Column(name = "class")
-    private Integer clazz;
 }

@@ -1,7 +1,8 @@
 package pers.jssd.elegenceservice.service;
 
 import pers.jssd.elegenceservice.entity.PageBean;
-import pers.jssd.elegenceservice.pojo.Student;
+import pers.jssd.elegenceservice.pojo.StudentDo;
+import pers.jssd.elegenceservice.pojo.StudentVo;
 
 /**
  * 学生业务接口
@@ -16,7 +17,7 @@ public interface StudentService {
      * @param size 每页多少条数据
      * @return 返回查询到的分页数据
      */
-    PageBean<Student> findAll(int page, int size);
+    PageBean<StudentDo> findAll(int page, int size);
 
     /**
      * 通过id查询一条数据
@@ -24,5 +25,13 @@ public interface StudentService {
      * @param id 查询的学生id
      * @return 返回查询到的学生
      */
-    Student findOneById(long id);
+    StudentVo findOneById(long id);
+
+    /**
+     * 添加一个学生信息
+     *
+     * @param studentDo 添加的学生Do对象
+     * @return 返回添加成功之后的id
+     */
+    long addOne(StudentDo studentDo);
 }
