@@ -25,6 +25,13 @@ public class StudentController {
 
     public StudentController(StudentService studentService) {this.studentService = studentService;}
 
+    /**
+     * 分页查询所有学生
+     *
+     * @param page 当前页
+     * @param size 每页多少条数据
+     * @return AjaxResponse
+     */
     @GetMapping
     public AjaxResponse findAll(@RequestParam(defaultValue = "0", required = false) int page,
                                 @RequestParam(defaultValue = "5", required = false) int size) {
@@ -32,6 +39,12 @@ public class StudentController {
         return AjaxResponse.success(pageBean);
     }
 
+    /**
+     * 查询一个学生的详情
+     *
+     * @param id 学生id
+     * @return AjaxResponse
+     */
     @GetMapping("/{id}")
     public AjaxResponse findOneById(@PositiveOrZero(message = "id格式错误-请输入正整数类型id") @PathVariable long id) {
         StudentVo studentVo = studentService.findOneById(id);
@@ -41,6 +54,12 @@ public class StudentController {
         return AjaxResponse.success(studentVo);
     }
 
+    /**
+     * 添加一个学生信息
+     *
+     * @param studentDo 学生信息
+     * @return AjaxResponse
+     */
     @PostMapping
     public AjaxResponse addOne(@Validated(Insert.class) @RequestBody StudentDo studentDo) {
         long id = studentService.addOne(studentDo);
