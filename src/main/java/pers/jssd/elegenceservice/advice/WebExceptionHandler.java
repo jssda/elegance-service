@@ -20,6 +20,8 @@ import java.util.Map;
 
 /**
  * 异常处理
+ *
+ * @author jssd
  */
 @Slf4j
 @ControllerAdvice
@@ -109,9 +111,8 @@ public class WebExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public AjaxResponse exception(Exception e) {
-        System.out.println("e.getCode() = " + e.getMessage());
         log.error(e.getMessage());
-        return AjaxResponse.error(new CustomException(ExceptionCode.OTHER_ERROR));
+        return AjaxResponse.error(new CustomException(ExceptionCode.OTHER_ERROR, e.getMessage(), "系统异常"));
     }
 
     /**

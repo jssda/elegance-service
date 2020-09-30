@@ -6,6 +6,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 /**
@@ -21,8 +23,10 @@ public class CourseDo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Max(20)
     private Long id;
 
+    @NotBlank
     private String name;
 
 

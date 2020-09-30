@@ -1,6 +1,5 @@
 package pers.jssd.elegenceservice.controller;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import pers.jssd.elegenceservice.entity.AjaxResponse;
