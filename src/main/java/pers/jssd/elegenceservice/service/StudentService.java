@@ -34,4 +34,17 @@ public interface StudentService {
      * @return 返回添加成功之后的id
      */
     long addOne(StudentDo studentDo);
+
+    /**
+     * 删除一个学生信息
+     *
+     * @param id 要删除的学生id
+     */
+    void deleteOne(long id);
+
+    /**
+     * 更新一个学生信息
+     * @param studentDo 学生实体类
+     */
+    void updateOne(StudentDo studentDo);
 }
