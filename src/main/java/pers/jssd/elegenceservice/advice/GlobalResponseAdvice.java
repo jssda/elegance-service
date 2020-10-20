@@ -11,6 +11,7 @@ import pers.jssd.elegenceservice.entity.AjaxResponse;
 
 /**
  * 使响应状态码设置和返回状态码一致
+ * @author jssd
  */
 @ControllerAdvice
 public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {

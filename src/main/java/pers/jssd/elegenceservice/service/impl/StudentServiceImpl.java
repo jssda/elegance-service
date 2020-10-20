@@ -56,4 +56,14 @@ public class StudentServiceImpl implements StudentService {
         StudentDo save = studentRepo.save(studentDo);
         return save.getId();
     }
+
+    @Override
+    public void deleteOne(long id) {
+        studentRepo.deleteById(id);
+    }
+
+    @Override
+    public void updateOne(StudentDo studentDo) {
+        studentRepo.save(studentDo);
+    }
 }
