@@ -1,8 +1,8 @@
-package pers.jssd.elegenceservice.service;
+package pers.jssd.eleganceservice.service;
 
-import pers.jssd.elegenceservice.entity.PageBean;
-import pers.jssd.elegenceservice.pojo.StudentDo;
-import pers.jssd.elegenceservice.pojo.StudentVo;
+import pers.jssd.eleganceservice.entity.PageBean;
+import pers.jssd.eleganceservice.pojo.StudentDo;
+import pers.jssd.eleganceservice.pojo.StudentVo;
 
 /**
  * 学生业务接口

@@ -1,4 +1,4 @@
-package pers.jssd.elegenceservice.entity;
+package pers.jssd.eleganceservice.entity;
 
 import lombok.Data;
 

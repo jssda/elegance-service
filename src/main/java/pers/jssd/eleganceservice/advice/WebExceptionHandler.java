@@ -1,4 +1,4 @@
-package pers.jssd.elegenceservice.advice;
+package pers.jssd.eleganceservice.advice;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindException;
@@ -8,9 +8,9 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
-import pers.jssd.elegenceservice.entity.AjaxResponse;
-import pers.jssd.elegenceservice.exception.CustomException;
-import pers.jssd.elegenceservice.exception.ExceptionCode;
+import pers.jssd.eleganceservice.entity.AjaxResponse;
+import pers.jssd.eleganceservice.exception.CustomException;
+import pers.jssd.eleganceservice.exception.ExceptionCode;
 
 import javax.validation.ConstraintViolationException;
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package pers.jssd.elegenceservice;
+package pers.jssd.eleganceservice;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

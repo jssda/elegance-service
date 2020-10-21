@@ -1,4 +1,4 @@
-package pers.jssd.elegenceservice.utils;
+package pers.jssd.eleganceservice.utils;
 
 import org.springframework.data.domain.PageRequest;
 

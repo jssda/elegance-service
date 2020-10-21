@@ -1,4 +1,4 @@
-package pers.jssd.elegenceservice.pojo;
+package pers.jssd.eleganceservice.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

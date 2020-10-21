@@ -1,4 +1,4 @@
-package pers.jssd.elegenceservice.advice;
+package pers.jssd.eleganceservice.advice;
 
 import org.springframework.core.MethodParameter;
 import org.springframework.http.HttpStatus;
@@ -7,7 +7,7 @@ import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
-import pers.jssd.elegenceservice.entity.AjaxResponse;
+import pers.jssd.eleganceservice.entity.AjaxResponse;
 
 /**
  * 使响应状态码设置和返回状态码一致

@@ -1,4 +1,4 @@
-package pers.jssd.elegenceservice.exception;
+package pers.jssd.eleganceservice.exception;
 
 /**
  * 自定义异常状态码

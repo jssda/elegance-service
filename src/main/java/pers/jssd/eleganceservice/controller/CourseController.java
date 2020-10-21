@@ -1,11 +1,11 @@
-package pers.jssd.elegenceservice.controller;
+package pers.jssd.eleganceservice.controller;
 
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import pers.jssd.elegenceservice.entity.AjaxResponse;
+import pers.jssd.eleganceservice.entity.AjaxResponse;
 
 import javax.validation.constraints.Max;
 import javax.validation.constraints.NotBlank;

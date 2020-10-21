@@ -1,7 +1,7 @@
-package pers.jssd.elegenceservice.repo;
+package pers.jssd.eleganceservice.repo;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import pers.jssd.elegenceservice.pojo.StudentDo;
+import pers.jssd.eleganceservice.pojo.StudentDo;
 
 /**
  * @author jssdjing@gmail.com

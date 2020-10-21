@@ -1,14 +1,14 @@
-package pers.jssd.elegenceservice.controller;
+package pers.jssd.eleganceservice.controller;
 
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import pers.jssd.elegenceservice.entity.AjaxResponse;
-import pers.jssd.elegenceservice.entity.Insert;
-import pers.jssd.elegenceservice.entity.PageBean;
-import pers.jssd.elegenceservice.entity.Update;
-import pers.jssd.elegenceservice.pojo.StudentDo;
-import pers.jssd.elegenceservice.pojo.StudentVo;
-import pers.jssd.elegenceservice.service.StudentService;
+import pers.jssd.eleganceservice.entity.AjaxResponse;
+import pers.jssd.eleganceservice.entity.Insert;
+import pers.jssd.eleganceservice.entity.PageBean;
+import pers.jssd.eleganceservice.entity.Update;
+import pers.jssd.eleganceservice.pojo.StudentDo;
+import pers.jssd.eleganceservice.pojo.StudentVo;
+import pers.jssd.eleganceservice.service.StudentService;
 
 import javax.validation.constraints.PositiveOrZero;
 

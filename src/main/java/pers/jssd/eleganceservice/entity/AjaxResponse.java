@@ -1,8 +1,8 @@
-package pers.jssd.elegenceservice.entity;
+package pers.jssd.eleganceservice.entity;
 
 import lombok.Data;
-import pers.jssd.elegenceservice.exception.CustomException;
-import pers.jssd.elegenceservice.exception.ExceptionCode;
+import pers.jssd.eleganceservice.exception.CustomException;
+import pers.jssd.eleganceservice.exception.ExceptionCode;
 
 import java.io.Serializable;
 

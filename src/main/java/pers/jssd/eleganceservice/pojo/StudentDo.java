@@ -1,11 +1,11 @@
-package pers.jssd.elegenceservice.pojo;
+package pers.jssd.eleganceservice.pojo;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import pers.jssd.elegenceservice.entity.Insert;
-import pers.jssd.elegenceservice.entity.Update;
+import pers.jssd.eleganceservice.entity.Insert;
+import pers.jssd.eleganceservice.entity.Update;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
