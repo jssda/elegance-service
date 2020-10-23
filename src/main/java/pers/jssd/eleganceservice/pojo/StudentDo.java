@@ -24,7 +24,7 @@ public class StudentDo implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @NotBlank(message = "不能缺少id字段", groups = Update.class)
+    @NotNull(message = "不能缺少id字段", groups = Update.class)
     @Null(message = "此字段需为空", groups = Insert.class)
     private Long id;
 

@@ -1,5 +1,7 @@
 package pers.jssd.eleganceservice.exception;
 
+import pers.jssd.eleganceservice.utils.ExceptionUtils;
+
 /**
  * 自定义异常
  *
@@ -13,7 +15,7 @@ public class CustomException extends RuntimeException {
     private int code;
 
     /**
-     * 异常信息
+     * 异常堆栈信息
      */
     private String message;
 
@@ -38,6 +40,28 @@ public class CustomException extends RuntimeException {
     public CustomException(ExceptionCode exceptionCode, String message, String info) {
         this(exceptionCode, message);
         this.info = info;
+    }
+
+    public static CustomException systemException(Exception e) {
+        return new CustomException(ExceptionCode.SYSTEM_ERROR, ExceptionUtils.getStackTraceInfo(e),
+                ExceptionCode.SYSTEM_ERROR.getDesc());
+    }
+
+    public static CustomException systemException(Exception e, String info) {
+        return new CustomException(ExceptionCode.SYSTEM_ERROR, "111", info);
+    }
+
+    public static CustomException userException(Exception e, String info) {
+        return new CustomException(ExceptionCode.USER_INPUT_ERROR, ExceptionUtils.getStackTraceInfo(e), info);
+    }
+
+    public static CustomException userException(Exception e) {
+        return new CustomException(ExceptionCode.USER_INPUT_ERROR, ExceptionUtils.getStackTraceInfo(e),
+                ExceptionCode.USER_INPUT_ERROR.getDesc());
+    }
+
+    public static CustomException userException(String message, String info) {
+        return new CustomException(ExceptionCode.USER_INPUT_ERROR, message, info);
     }
 
     public int getCode() {

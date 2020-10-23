@@ -35,7 +35,7 @@ public class WebExceptionHandler {
     public AjaxResponse customerException(CustomException e) {
         if (e.getCode() == ExceptionCode.SYSTEM_ERROR.getCode() || e.getCode() == ExceptionCode.OTHER_ERROR.getCode()) {
             // 输出到日志框架, 持久化处理
-            log.error(e.getMessage());
+            log.error(e.getInfo(), e);
         }
         return AjaxResponse.error(e);
     }
@@ -54,7 +54,7 @@ public class WebExceptionHandler {
         for (ObjectError objectError : ex.getAllErrors()) {
             resolveError(list, objectError);
         }
-        log.error("参数绑定错误\n" + ex.getMessage());
+        log.error("参数绑定错误", ex);
         return AjaxResponse.error(ExceptionCode.USER_INPUT_ERROR, "参数绑定错误", list);
     }
 
@@ -111,7 +111,7 @@ public class WebExceptionHandler {
      */
     @ExceptionHandler(Exception.class)
     public AjaxResponse exception(Exception e) {
-        log.error(e.getMessage());
+        log.error(e.getMessage(), e);
         return AjaxResponse.error(new CustomException(ExceptionCode.OTHER_ERROR, e.getMessage(), "系统异常"));
     }
 
