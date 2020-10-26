@@ -39,6 +39,36 @@ SpringBoot版本：2.3.4.RELEASE
 
 使用校验框架校验一个Controller请求的参数非常简单
 
+当 Controller 需要校验一些基本的参数的时候，使用对应的注解。
+
+```java
+/**
+ * 通过审核的id, 查询审核的详细信息
+ *
+ * @param approvalId 审核eid
+ * @return 返回响应到前端的信息
+ */
+@PostMapping("directory/findApplicationById")
+public Result findAuditById(@NotBlank(message = "审核id不可为空") String approvalId,
+                            @NotBlank(message = "用户did不可为空") String userDid) {
+    return Result.success(dirAuditService.findAuditById(approvalId, userDid));
+}
+```
+
+仅仅使用校验注解还不行，在 Controller 类的头部使用注解 `@Validated` 启动校验。
+
+
+
+
+
+
+
+# 优雅的异常捕获与处理
+
+
+
+
+
 
 
 # 资料参考
