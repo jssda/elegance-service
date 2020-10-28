@@ -37,25 +37,64 @@ SpringBoot版本：2.3.4.RELEASE
 
 ## 使用
 
+### 普通参数校验
+
 使用校验框架校验一个Controller请求的参数非常简单
 
 当 Controller 需要校验一些基本的参数的时候，使用对应的注解。
 
 ```java
-/**
- * 通过审核的id, 查询审核的详细信息
- *
- * @param approvalId 审核eid
- * @return 返回响应到前端的信息
- */
-@PostMapping("directory/findApplicationById")
-public Result findAuditById(@NotBlank(message = "审核id不可为空") String approvalId,
-                            @NotBlank(message = "用户did不可为空") String userDid) {
-    return Result.success(dirAuditService.findAuditById(approvalId, userDid));
+@RestController
+@Validated
+@RequestMapping("/api/v2/elegance/students")
+public class VerifyDemoController {
+
+    private final StudentService studentService;
+
+    public VerifyDemoController(StudentService studentService) {this.studentService = studentService;}
+
+    @GetMapping
+    public AjaxResponse findStudentsByUserName(
+            @NotBlank(message = "查询的姓名不能为空") @RequestParam(name = "name") String name) {
+
+        StudentVo studentVo = studentService.findStudentsByUserName(name);
+        return AjaxResponse.success(studentVo);
+    }
 }
 ```
 
 仅仅使用校验注解还不行，在 Controller 类的头部使用注解 `@Validated` 启动校验。
+
+ 
+
+那么，我们访问一个错误的 url ：`GET http://localhost:8080/api/v2/elegance/students?name=`
+
+返回信息
+
+```json
+{"code":400,"message":"输入参数异常","data":[{"field":"name","message":"查询的姓名不能为空"}]}
+```
+
+错误日志
+
+```log
+2020-10-28 19:52:35.756 ERROR 11656 --- [nio-8080-exec-7] p.j.e.advice.WebExceptionHandler         : 输入参数异常
+
+javax.validation.ConstraintViolationException: findStudentsByUserName.name: 查询的姓名不能为空
+	at org.springframework.validation.beanvalidation.MethodValidationInterceptor.invoke(MethodValidationInterceptor.java:116) ~[spring-context-5.2.9.RELEASE.jar:5.2.9.RELEASE]
+	at org.springframework.aop.framework.ReflectiveMethodInvocation.proceed(ReflectiveMethodInvocation.java:186) ~[spring-aop-5.2.9.RELEASE.jar:5.2.9.RELEASE]
+	at org.springframework.aop.framework.CglibAopProxy$CglibMethodInvocation.proceed(CglibAopProxy.java:749) ~[spring-aop-5.2.9.RELEASE.jar:5.2.9.RELEASE]
+	at org.springframework.aop.framework.CglibAopProxy$DynamicAdvisedInterceptor.intercept(CglibAopProxy.java:691) ~[spring-aop-5.2.9.RELEASE.jar:5.2.9.RELEASE]
+	at pers.jssd.eleganceservice.controller.VerifyDemoController$$EnhancerBySpringCGLIB$$ef60bb9f.findStudentsByUserName(<generated>) ~[classes/:na]
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[na:1.8.0_231]
+...
+```
+
+返回一个 `javax.validation.ConstraintViolationException` 异常。
+
+
+
+### 实体参数校验
 
 
 

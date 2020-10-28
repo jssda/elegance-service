@@ -47,4 +47,12 @@ public interface StudentService {
      * @param studentDo 学生实体类
      */
     void updateOne(StudentDo studentDo);
+
+    /**
+     * 通过用户姓名查询用户
+     *
+     * @param name 用户姓名
+     * @return 返回查询到的用户
+     */
+    StudentVo findStudentsByUserName(String name);
 }

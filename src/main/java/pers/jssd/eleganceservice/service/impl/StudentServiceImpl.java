@@ -66,4 +66,12 @@ public class StudentServiceImpl implements StudentService {
     public void updateOne(StudentDo studentDo) {
         studentRepo.save(studentDo);
     }
+
+    @Override
+    public StudentVo findStudentsByUserName(String name) {
+        StudentDo byName = studentRepo.findByName(name);
+        StudentVo studentVo = new StudentVo();
+        BeanUtils.copyProperties(byName, studentVo);
+        return studentVo;
+    }
 }
