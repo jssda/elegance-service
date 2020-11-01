@@ -28,6 +28,14 @@ public interface StudentService {
     StudentVo findOneById(long id);
 
     /**
+     * 查询一个基本实体
+     *
+     * @param id id
+     * @return 返回查询到的实体
+     */
+    StudentDo findOneDoById(long id);
+
+    /**
      * 添加一个学生信息
      *
      * @param studentDo 添加的学生Do对象
@@ -44,6 +52,7 @@ public interface StudentService {
 
     /**
      * 更新一个学生信息
+     *
      * @param studentDo 学生实体类
      */
     void updateOne(StudentDo studentDo);

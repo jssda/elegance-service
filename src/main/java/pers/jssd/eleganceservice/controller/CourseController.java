@@ -1,14 +1,13 @@
 package pers.jssd.eleganceservice.controller;
 
-import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import pers.jssd.eleganceservice.entity.AjaxResponse;
+import pers.jssd.eleganceservice.entity.Insert;
+import pers.jssd.eleganceservice.pojo.CourseVo;
+import pers.jssd.eleganceservice.service.CourseService;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.NotBlank;
+import java.util.List;
 
 /**
  * 课程请求控制器
@@ -21,12 +20,20 @@ import javax.validation.constraints.NotBlank;
 @RequestMapping("/api/v1/elegance/course")
 public class CourseController {
 
-    @GetMapping
-    public AjaxResponse addCourse(@Max(value = 20, message = "id不可大于20") long id, BindingResult idBindingResult,
-                                  @NotBlank(message = "名称不可为空") String name, BindingResult bindingResult) {
-        System.out.println("idBindingResult = " + idBindingResult);
-        System.out.println("bindingResult = " + bindingResult);
+    private final CourseService courseService;
+
+    public CourseController(CourseService courseService) {this.courseService = courseService;}
+
+    @PostMapping
+    public AjaxResponse testNested(@RequestBody @Validated(Insert.class) CourseVo courseVo) {
+        System.out.println("courseVo = " + courseVo);
         return AjaxResponse.success();
+    }
+
+    @GetMapping
+    public AjaxResponse getCourses() {
+        List<CourseVo> lists = courseService.getList();
+        return AjaxResponse.success(lists);
     }
 
 }

@@ -52,6 +52,11 @@ public class StudentServiceImpl implements StudentService {
     }
 
     @Override
+    public StudentDo findOneDoById(long id) {
+        return studentRepo.findById(id).orElse(null);
+    }
+
+    @Override
     public long addOne(StudentDo studentDo) {
         StudentDo save = studentRepo.save(studentDo);
         return save.getId();
