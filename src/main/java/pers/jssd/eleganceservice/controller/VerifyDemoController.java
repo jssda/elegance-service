@@ -26,7 +26,7 @@ public class VerifyDemoController {
 
     @GetMapping
     public AjaxResponse findStudentsByUserName(
-            @NotBlank(message = "查询的姓名不能为空") @RequestParam(name = "name") String name) {
+            @NotBlank(message = "查询的姓名不能为空, 测试部署") @RequestParam(name = "name") String name) {
 
         StudentVo studentVo = studentService.findStudentsByUserName(name);
         return AjaxResponse.success(studentVo);

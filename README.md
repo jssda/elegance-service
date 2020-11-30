@@ -274,6 +274,199 @@ Assert.hasText((message, "输入信息错误!");
 
 校验是有了, 但是怎么友好的通知用户呢? 我们使用切面直接捕获所有的异常, 通知用户.
 
+好的异常处理, 不是一大块一大块的`try-catch`, 那样会让代码看起来很难看. 这里我们可以用 Spring 的切面处理异常. 系统出现的异常, 不应该被用户所知道, 由用户输出产生的异常, 应该明确的告知用户. 
+
+使用`@ControllerAdvice`为 Controller 增加一个切面, 使用 `@ExceptionHandler` 捕获指定的异常, 对指定异常处理, 达到定制话的效果.
+
+### 自定义异常
+
+首先, 搞出来一个自定义异常.
+
+自定义异常码
+
+```java
+package pers.jssd.eleganceservice.exception;
+
+/**
+ * 自定义异常状态码
+ *
+ * @author jssdjing@gmail.com
+ */
+public enum ExceptionCode {
+
+    /**
+     * 用户输入异常
+     */
+    USER_INPUT_ERROR(400, "您输入的数据错误或您没有权限访问资源！"),
+
+    /**
+     * 系统异常
+     */
+    SYSTEM_ERROR(500, "系统出现异常，请您稍后再试或联系管理员！"),
+
+    /**
+     * 未知异常
+     */
+    OTHER_ERROR(503, "系统出现未知异常，请联系管理员！");
+
+    ExceptionCode(int code, String desc) {
+        this.code = code;
+        this.desc = desc;
+    }
+
+    /**
+     * 异常类型中文描述
+     */
+    private final String desc;
+
+    /**
+     * code
+     */
+    private final int code;
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+}
+
+```
+
+自定义异常
+
+```java
+package pers.jssd.eleganceservice.exception;
+
+import pers.jssd.eleganceservice.utils.ExceptionUtils;
+
+/**
+ * 自定义异常
+ *
+ * @author jssdjing@gmail.com
+ */
+public class CustomException extends RuntimeException {
+
+    /**
+     * 异常错误编码
+     */
+    private int code;
+
+    /**
+     * 异常堆栈信息
+     */
+    private String message;
+
+    /**
+     * 响应到前端的异常提示信息
+     */
+    private String info;
+
+
+    private CustomException() {}
+
+    public CustomException(ExceptionCode exceptionTypeEnum) {
+        this.code = exceptionTypeEnum.getCode();
+        this.message = exceptionTypeEnum.getDesc();
+    }
+
+    public CustomException(ExceptionCode exceptionCode, String message) {
+        this.code = exceptionCode.getCode();
+        this.message = message;
+    }
+
+    public CustomException(ExceptionCode exceptionCode, String message, String info) {
+        this(exceptionCode, message);
+        this.info = info;
+    }
+
+    public static CustomException systemException(Exception e) {
+        return new CustomException(ExceptionCode.SYSTEM_ERROR, ExceptionUtils.getStackTraceInfo(e),
+                ExceptionCode.SYSTEM_ERROR.getDesc());
+    }
+
+    public static CustomException systemException(Exception e, String info) {
+        return new CustomException(ExceptionCode.SYSTEM_ERROR, "111", info);
+    }
+
+    public static CustomException userException(Exception e, String info) {
+        return new CustomException(ExceptionCode.USER_INPUT_ERROR, ExceptionUtils.getStackTraceInfo(e), info);
+    }
+
+    public static CustomException userException(Exception e) {
+        return new CustomException(ExceptionCode.USER_INPUT_ERROR, ExceptionUtils.getStackTraceInfo(e),
+                ExceptionCode.USER_INPUT_ERROR.getDesc());
+    }
+
+    public static CustomException userException(String message, String info) {
+        return new CustomException(ExceptionCode.USER_INPUT_ERROR, message, info);
+    }
+
+    public int getCode() {
+        return code;
+    }
+
+    @Override
+    public String getMessage() {
+        return message;
+    }
+
+    public String getInfo() {
+        return info;
+    }
+
+}
+
+```
+
+此处需要注意, 当捕获一个异常, 转换为自定义异常的时候. 假如日志打印吃出来, 会发现只有自定义异常的堆栈信息, 并不是原始产生的异常堆栈信息. 所以, 我们应该吧转换之前的堆栈信息, 传递到自定义异常中. 所以添加一个异常工具类.
+
+```java
+import java.io.PrintWriter;
+import java.io.StringWriter;
+
+/**
+ * @author jssd jssdjing@gmail.com
+ * @date 2020/10/23 16:14
+ */
+public class ExceptionUtils {
+
+    /**
+     * 获取e.printStackTrace() 的具体信息，赋值给String 变量，并返回
+     *
+     * @param e Exception
+     * @return e.printStackTrace() 中 的信息
+     */
+    public static String getStackTraceInfo(Exception e) {
+        try (StringWriter sw = new StringWriter(); PrintWriter pw = new PrintWriter(sw)) {
+            //将出错的栈信息输出到printWriter中
+            e.printStackTrace(pw);
+            pw.flush();
+            sw.flush();
+            return sw.toString();
+        } catch (Exception ex) {
+            return "发生错误";
+        }
+    }
+
+}
+```
+
+转换为自定义异常的时候, 获取原始异常堆栈信息, 存储到自定义异常.
+
+```java
+public static CustomException userException(Exception e, String info) {
+	return new CustomException(ExceptionCode.USER_INPUT_ERROR, ExceptionUtils.getStackTraceInfo(e), info);
+}
+```
+
+info 字段会响应给前端用户.
+
+### 切面捕获
+
 ```java
 package pers.jssd.eleganceservice.advice;
 
@@ -311,7 +504,7 @@ public class WebExceptionHandler {
     @ExceptionHandler(CustomException.class)
     public AjaxResponse customerException(CustomException e) {
         if (e.getCode() == ExceptionCode.SYSTEM_ERROR.getCode() || e.getCode() == ExceptionCode.OTHER_ERROR.getCode()) {
-            // 输出到日志框架, 持久化处理
+            // 输出到日志框架, 持久化处理. 日志输出, 会打印出提示给前端用户的信息, 并且输出原始异常堆栈信息
             log.error(e.getInfo(), e);
         }
         return AjaxResponse.error(e);
@@ -412,6 +605,50 @@ public class WebExceptionHandler {
     }
 }
 ```
+
+### 转换异常状态码
+
+此时提示给用户的信息中, 如果产生了异常, 只是返回的信息中的一个字段是指定的状态码. 实际返回的状态码是正确的. 所以我们应该处理一下, 将返回的状态码, 转换为浏览器收到的状态码.
+
+```java
+package pers.jssd.eleganceservice.advice;
+
+import org.springframework.core.MethodParameter;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.server.ServerHttpRequest;
+import org.springframework.http.server.ServerHttpResponse;
+import org.springframework.web.bind.annotation.ControllerAdvice;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
+import pers.jssd.eleganceservice.entity.AjaxResponse;
+
+/**
+ * 使响应状态码设置和返回状态码一致
+ * @author jssd
+ */
+@ControllerAdvice
+public class GlobalResponseAdvice implements ResponseBodyAdvice<Object> {
+    @Override
+    public boolean supports(MethodParameter returnType, Class converterType) {
+        return true;
+    }
+
+    @Override
+    public Object beforeBodyWrite(Object body, MethodParameter returnType, MediaType selectedContentType,
+                                  Class selectedConverterType, ServerHttpRequest request, ServerHttpResponse response) {
+
+        //如果响应结果是JSON数据类型
+        if (selectedContentType.equalsTypeAndSubtype(MediaType.APPLICATION_JSON) && body instanceof AjaxResponse) {
+            //为HTTP响应结果设置状态码，状态码就是AjaxResponse的code，二者达到统一
+            response.setStatusCode(HttpStatus.valueOf(((AjaxResponse) body).getCode()));
+            return body;
+        }
+        return body;
+    }
+}
+```
+
+
 
 # 资料参考
 
